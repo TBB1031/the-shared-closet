@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f3f4f6">
+  <meta name="description" content="A private digital closet for sharing clothes and accessories with friends.">
+  <title>The Shared Closet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <main id="authView" class="auth-shell hidden">
+    <section class="auth-card glass">
+      <div class="brand-mark">SC</div>
+      <p class="eyebrow">A LITTLE MORE SHARING</p>
+      <h1>Your closet.<br><span>Our community.</span></h1>
+      <p class="muted auth-intro">Keep track of what you own, share pieces with your people, and borrow before you buy.</p>
+      <div class="auth-tabs">
+        <button class="tab active" data-auth-tab="login">Sign in</button>
+        <button class="tab" data-auth-tab="register">Create account</button>
+      </div>
+      <form id="authForm">
+        <label id="nameField" class="field hidden">Your name<input name="name" autocomplete="name" placeholder="Alex Morgan"></label>
+        <label class="field">Email<input name="email" type="email" autocomplete="email" required placeholder="you@example.com"></label>
+        <label class="field">Password<input name="password" type="password" autocomplete="current-password" minlength="10" required placeholder="At least 10 characters"></label>
+        <button class="primary full" type="submit" id="authSubmit">Sign in</button>
+        <p id="authMessage" class="form-message" role="status"></p>
+      </form>
+      <p class="tiny muted">Private by design. Your items are only visible to the groups you choose.</p>
+    </section>
+  </main>
+
+  <div id="appView" class="app-shell hidden">
+    <aside class="sidebar glass">
+      <a class="wordmark" href="#"><span class="brand-mark small">SC</span><span>The Shared Closet<small>GOOD THINGS, SHARED</small></span></a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="side-nav">
+        <button class="nav-link active" data-view="closet"><span>▦</span> My closet</button>
+        <button class="nav-link" data-view="discover"><span>⌕</span> Friends' closets</button>
+        <button class="nav-link" data-view="requests"><span>↗</span> Borrowing <i id="requestCount" class="count hidden">0</i></button>
+        <button class="nav-link" data-view="groups"><span>◉</span> My groups</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="privacy-note"><span class="privacy-dot"></span><div><b>Your circle, your choice</b><small>Only invited group members can see shared pieces.</small></div></div>
+        <button id="logoutButton" class="nav-link logout"><span>↪</span> Sign out</button>
+      </div>
+    </aside>
+
+    <section class="main-column">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark small">SC</span><b>The Shared Closet</b></div>
+        <div class="breadcrumb" id="breadcrumb">Your space <span>/</span> My closet</div>
+        <div class="top-actions"><span class="avatar" id="userAvatar">A</span><span id="userName" class="user-name">Member</span></div>
+      </header>
+      <main class="content">
+        <section class="welcome-row">
+          <div><p class="eyebrow" id="todayLabel">YOUR PERSONAL WARDROBE</p><h1 id="pageTitle">Your closet<span class="period">.</span></h1><p class="muted" id="pageSubtitle">Everything you own, all in one place.</p></div>
+          <button class="primary" id="addItemButton"><span>＋</span> Add an item</button>
+        </section>
+        <section id="closetView" class="view">
+          <div class="stats-row">
+            <article class="stat-card glass"><span class="stat-icon">▦</span><div><strong id="statTotal">0</strong><small>Pieces in your closet</small></div></article>
+            <article class="stat-card glass"><span class="stat-icon">↗</span><div><strong id="statShared">0</strong><small>Shared with friends</small></div></article>
+            <article class="stat-card glass"><span class="stat-icon">♡</span><div><strong id="statBorrowed">0</strong><small>Currently borrowed</small></div></article>
+          </div>
+          <div class="toolbar"><div class="filter-pills" id="categoryFilters"><button class="filter active" data-category="All">All pieces</button><button class="filter" data-category="Tops">Tops</button><button class="filter" data-category="Bottoms">Bottoms</button><button class="filter" data-category="Outerwear">Outerwear</button><button class="filter" data-category="Shoes">Shoes</button><button class="filter" data-category="Bags">Bags</button><button class="filter" data-category="Accessories">Accessories</button></div><span class="result-count" id="itemCount">0 pieces</span></div>
+          <div id="myItems" class="item-grid"></div>
+        </section>
+        <section id="discoverView" class="view hidden">
+          <div class="section-heading"><div><h2>Good things, shared.</h2><p class="muted">Pieces your friends have made available to your groups.</p></div></div>
+          <div class="toolbar"><input id="searchItems" class="search-input" placeholder="Search clothes, shoes, accessories…"><select id="discoverCategory" class="select"><option value="All">All categories</option><option>Tops</option><option>Bottoms</option><option>Outerwear</option><option>Shoes</option><option>Bags</option><option>Accessories</option><option>Dresses</option><option>Other</option></select></div>
+          <div id="sharedItems" class="item-grid"></div>
+        </section>
+        <section id="requestsView" class="view hidden">
+          <div class="section-heading"><div><h2>Borrowing, made simple.</h2><p class="muted">Approve requests from friends and keep track of pieces on loan.</p></div></div>
+          <div class="request-columns"><div><h3>Requests for your items</h3><div id="incomingRequests" class="request-list"></div></div><div><h3>Your requests & loans</h3><div id="outgoingRequests" class="request-list"></div></div></div>
+        </section>
+        <section id="groupsView" class="view hidden">
+          <div class="section-heading"><div><h2>Your people.</h2><p class="muted">Create a private circle or join one with an invite code.</p></div></div>
+          <div class="group-actions">
+            <form id="createGroupForm" class="glass mini-form"><span class="form-kicker">START A CIRCLE</span><h3>Create a group</h3><p class="muted">Make a private closet-sharing group for your friends.</p><label class="field">Group name<input name="name" required maxlength="60" placeholder="Weekend crew"></label><button class="primary full">Create group</button></form>
+            <form id="joinGroupForm" class="glass mini-form"><span class="form-kicker">JOIN YOUR PEOPLE</span><h3>Have an invite code?</h3><p class="muted">Ask a group member to share their code with you.</p><label class="field">Invite code<input name="code" required maxlength="12" placeholder="A1B2C3D4"></label><button class="secondary full">Join group</button></form>
+          </div>
+          <div class="group-list-wrap"><h3>Your groups</h3><div id="groupList" class="group-grid"></div></div>
+        </section>
+      </main>
+      <footer class="footer"><span>THE SHARED CLOSET</span><span>Share more. Buy less. Wear everything.</span></footer>
+    </section>
+  </div>
+
+  <dialog id="itemDialog" class="modal glass">
+    <form id="itemForm" enctype="multipart/form-data">
+      <div class="modal-head"><div><p class="eyebrow">ADD TO YOUR WARDROBE</p><h2>Add a piece</h2></div><button type="button" class="icon-button" data-close="itemDialog">×</button></div>
+      <label class="upload-box" for="photoInput"><span class="upload-symbol">＋</span><b>Add a photo</b><small>JPG, PNG, WEBP or GIF · up to 8 MB</small><img id="photoPreview" class="photo-preview hidden" alt="Selected item preview"></label>
+      <input id="photoInput" name="photo" type="file" accept="image/jpeg,image/png,image/webp,image/gif" class="hidden">
+      <div class="form-two"><label class="field">Item name<input name="name" required maxlength="80" placeholder="Black leather jacket"></label><label class="field">Category<select name="category"><option>Tops</option><option>Bottoms</option><option>Outerwear</option><option>Dresses</option><option>Shoes</option><option>Bags</option><option>Accessories</option><option>Other</option></select></label></div>
+      <label class="field">Size <span class="optional">OPTIONAL</span><input name="size" maxlength="30" placeholder="M, 8, One size…"></label>
+      <label class="field">Description <span class="optional">OPTIONAL</span><textarea name="description" rows="2" maxlength="500" placeholder="A little detail about this piece…"></textarea></label>
+      <div class="field"><span class="field-title">Share with groups</span><div id="itemGroupChoices" class="choice-list"><span class="muted tiny">Create or join a group to share pieces.</span></div></div>
+      <p id="itemMessage" class="form-message"></p>
+      <button class="primary full" type="submit">Save to my closet</button>
+    </form>
+  </dialog>
+
+  <dialog id="borrowDialog" class="modal glass">
+    <form id="borrowForm">
+      <div class="modal-head"><div><p class="eyebrow">ASK A FRIEND</p><h2>Request this piece</h2></div><button type="button" class="icon-button" data-close="borrowDialog">×</button></div>
+      <p id="borrowItemName" class="muted"></p><input type="hidden" name="itemId">
+      <div class="form-two"><label class="field">Pick-up date<input type="date" name="startDate" required></label><label class="field">Return date<input type="date" name="endDate" required></label></div>
+      <label class="field">Add a note <span class="optional">OPTIONAL</span><textarea name="message" rows="3" maxlength="300" placeholder="What are you borrowing it for?"></textarea></label>
+      <p id="borrowMessage" class="form-message"></p><button class="primary full">Send request</button>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
